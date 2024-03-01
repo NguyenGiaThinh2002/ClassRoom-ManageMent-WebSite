@@ -1,0 +1,85 @@
+.assignment-container{
+    width: 100%;
+}
+.add-assignment-button{
+    background-color: rgb(25,103,210);
+    /* width: 150px; */
+    border-radius: 50em;
+    margin: 10px;
+    margin-right: 100px;
+}
+
+.assignmentModal-info{
+    width: 60%;
+    /* height: 160px; */
+    border: 1px solid #e0e0e0;
+    margin-left: 10px;
+    overflow-x: hidden;
+    padding: 20px;
+
+    /* position: relative; */
+}
+
+.assignTitle{
+    width: 100%;
+    /* size: 10; */
+    /* padding: 20px; */
+    
+    /* margin-right: 10px; */
+}
+
+.assignTitle:hover{
+    /* border-bottom: rgb(25,103,210) 1px solid; */
+}
+
+.assignmentModal{
+    padding-top: 15px;
+}
+
+.all-assigment-info{
+    display: flex;
+    /* border: 1px solid #e0e0e0; */
+    margin: 10px;
+ 
+    /* flex-direction: column; */
+
+
+}
+
+.assignment-other-info{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+        /* height: 150px; */
+}
+
+.han-nop{
+    width: 150px;
+}
+.diem-so{
+    width: 300px;
+}
+
+.text-field{
+    display: flex;
+    /* margin: 10px; */
+}
+
+.text-field-items{
+    margin: 5px;
+}
+
+.assignment-other-info-items{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.assignment-info-name{
+    margin: 10px;
+    font-weight: 500;
+}
