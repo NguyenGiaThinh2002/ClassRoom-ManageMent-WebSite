@@ -18,7 +18,6 @@ export default function Login() {
     const username = userObject.name;
     const email = userObject.email;
     const photoURL = userObject.picture;
-
     await axios
       .post("auth/signup", {
         username: username,

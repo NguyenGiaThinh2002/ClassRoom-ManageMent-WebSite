@@ -5,7 +5,7 @@ import axios from '../../../../services/axios'
 
 
 const InviteModal = ({ onClose }) => {
-    const {recommentedUser, selectedClass, setSelectedClassRoomId, setStudentList} = useApp()
+    const {recommentedUser, selectedClass, setSelectedClassRoomId, setStudentList, } = useApp()
 
   const [selectedUsers, setSelectedUsers] = useState([]);
 

@@ -75,6 +75,8 @@ div.class-body{
   }
   
   .card-feature {
+    display: flex;
+    justify-content: flex-end;
     padding: 16px;
     text-align: center;
     width: 262px;
@@ -98,4 +100,9 @@ div.class-body{
     align-items: flex-start;
     padding: 5px;
     /* padding: 10px; */
+  }
+
+  .class-icon{
+    font-size: 15px;
+    width: 40px;
   }

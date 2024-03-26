@@ -9,7 +9,7 @@ import { useApp } from '../../context/AppProvider';
 
 // tao repos tren github MSSV, Hoten, Frontend(Backend), nao thay gui thi nop
 export default function SideBar({ isOpen, onClose }) {
-  const {setClassEmpty} = useApp();
+  const {setClassEmpty, handleSetOpenStoringClasses, handleSetCloseStoringClasses} = useApp();
 
   return (
     // onMouseOver={isOpen ? onClose : undefined} onMouseOut={isOpen ? onClose : undefined}
@@ -19,15 +19,15 @@ export default function SideBar({ isOpen, onClose }) {
       <div className="sidebar-content">
         <ul className="nav-links">
           <li >
-            <Link to="#"  onClick={setClassEmpty}>
+            <Link to="#"   onClick={() => { setClassEmpty(); handleSetCloseStoringClasses(); }} >
             <FontAwesomeIcon icon={faHome} className='icon'/>
             {/* { !isOpen && <div>Màn hình chính</div> } */}
             <div className='sidebar-text' >Màn hình chính</div>
             </Link>
           </li>
           <li >
-            <Link to="#" >
-            <FontAwesomeIcon icon={faChalkboard} className='icon'/>
+            <Link to="#" onClick={handleSetOpenStoringClasses}>
+            <FontAwesomeIcon icon={faChalkboard} className='icon' />
             <div className='sidebar-text'>Lớp Học</div>
             {/* { !isOpen && <div><FontAwesomeIcon icon={faChalkboard} className='icon'/>Lớp Học</div> } */}
             </Link>

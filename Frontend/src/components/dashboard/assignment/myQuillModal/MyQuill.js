@@ -7,10 +7,18 @@ import { lightFormatters } from "date-fns";
 import "./myquill.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
-const MyQuillComponent = ({ onClose , api }) => {
+const MyQuillComponent = ({ onClose , allInfo , isEdit}) => {
   const [content, setContent] = useState("");
   const { selectedClass, setNotification } = useApp();
   const [createdFiles, setCreatedFiles] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [pdfUrls, setPdfUrls] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  
+  if(isEdit){
+    // setContent(editContent);
+    console.log(allInfo.editContent);
+  }
   const handleEditorChange = (value) => {
     setContent(value);
   };
@@ -40,19 +48,29 @@ const MyQuillComponent = ({ onClose , api }) => {
         createdFiles.push(uploadedFiles.data._id);
       }
 
+      const dueDay = new Date(`${allInfo.selectedDate} ${allInfo.selectedTime}`);
+      // console.log("this is dueDay",dueDay);
+
       const notificationData = {
         content: content,
-        classID: selectedClass._id,
         files: createdFiles,
+        dueDay: dueDay,
+        classID: allInfo.classID,
+        title: allInfo.title,
+        submitLatePermission: allInfo.submitLatePermission,
+        grade: allInfo.grade
       };
+
+
+      console.log("save content successfully", notificationData);
       axios
-        .post(`${api}`, notificationData)
+        .post(`assignment/createAssignment`, notificationData)
         .then((response) => {
           console.log("store notification successfully", response.data);
-          setNotification((prevNotifications) => [
-            ...prevNotifications,
-            response.data,
-          ]);
+          // setNotification((prevNotifications) => [
+          //   ...prevNotifications,
+          //   response.data,
+          // ]);
         })
         .catch((error) => {
           console.error("Error creating notification:", error);
@@ -65,14 +83,12 @@ const MyQuillComponent = ({ onClose , api }) => {
     onClose();
   };
   const handleClose = () => {
-    console.log(api);
     setContent("");
+    console.log(allInfo);
     onClose();
   };
 
-  const [files, setFiles] = useState([]);
-  const [pdfUrls, setPdfUrls] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+
 
   const handleFileChange = (e) => {
     const files = e.target.files;
@@ -119,10 +135,10 @@ const MyQuillComponent = ({ onClose , api }) => {
               !content.trim() || !content.replace(/<\/?[^>]+(>|$)/g, "").trim()
             }
           >
-            Save Content
+            Đăng Bài
           </button>
           <button onClick={handleClose} className="close-btn">
-            Close
+            Đóng
           </button>
         </div>
       </div>
@@ -134,20 +150,16 @@ MyQuillComponent.modules = {
   toolbar: [
     ["bold", "italic", "underline", "strike"], // toggled buttons
     ["blockquote", "code-block"],
-
     // [{ header: 1 }, { header: 2 }], 
     [{ list: "ordered" }, { list: "bullet" }],
     // [{ script: "sub" }, { script: "super" }],
     [{ indent: "-1" }, { indent: "+1" }], 
     // [{ direction: "rtl" }],
-
     // [{ size: ["small", false, "large", "huge"] }], 
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
     [{ color: [] }, { background: [] }], 
     // [{ font: [] }],
     [{ align: [] }],
-
     ["clean"], // remove formatting button
   ],
 };

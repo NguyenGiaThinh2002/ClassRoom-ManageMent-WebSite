@@ -35,7 +35,6 @@ export default function AuthProvider({children}) {
       setUser(null);
       navigate('/')
     };
-    
   
   return (
     // <div>AuthProvider</div>

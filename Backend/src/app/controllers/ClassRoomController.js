@@ -21,11 +21,52 @@ class ClassRoomController {
 
     async getClass(req,res){
         try {
-            const classClist = await ClassRoom.find();
+            const classClist = await ClassRoom.find({ isStored: false });
+            // Cho thêm điều kiện là nó có trạng thái lưu trữ là false
             return res.status(200).json(classClist);
         } catch (error) {
             return res.status(400).send(error);
         }
+    }
+
+    async getStoredClass(req,res){
+      try {
+          const classClist = await ClassRoom.find({ isStored: true });
+          // Cho thêm điều kiện là nó có trạng thái lưu trữ là false
+          return res.status(200).json(classClist);
+      } catch (error) {
+          return res.status(400).send(error);
+      }
+  }
+
+    // Thêm một getStoredClass, nếu trạng thái lưu trữ là true
+
+    async storeClass(req,res){
+      try {
+        const classID = req.params.classID;
+        const {restore} = req.body;
+        // console.log(restore);
+        console.log("update class id", classID);
+        if(restore){
+          const isStored = false;
+          const updatedClass = await ClassRoom.findByIdAndUpdate(
+            classID,
+            { isStored }
+          );
+          return res.status(200).json(updatedClass);
+        }else{
+          const isStored = true;
+          const updatedClass = await ClassRoom.findByIdAndUpdate(
+            classID,
+            { isStored }
+          );
+          return res.status(200).json(updatedClass);
+        }
+
+      } catch (error) {
+        console.error('Error fetching class data:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
     }
 
     async getClassByID(req, res) {
@@ -63,6 +104,6 @@ class ClassRoomController {
             return res.status(500).json({ error: 'Internal Server Error' });
           }
       }
-
+      
 }
 module.exports = new ClassRoomController;

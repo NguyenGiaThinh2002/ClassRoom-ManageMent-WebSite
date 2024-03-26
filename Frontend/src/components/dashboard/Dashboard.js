@@ -4,7 +4,9 @@ import { useApp } from "../../context/AppProvider";
 import Main from './main/Main'
 import People from './people/People'
 import Assignment from "./assignment/Assignment";
+import Grade from "./grade/Grade";
 export default function Dashboard( {selectedIndex}) {
+  const { loginnedUserId } = useApp()
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const handleNavItemClick = (index) => {
     setSelectedNavItem(index);
@@ -17,7 +19,7 @@ export default function Dashboard( {selectedIndex}) {
           className={`nav-item ${selectedNavItem === 0 ? "selected" : ""}`}
           onClick={() => handleNavItemClick(0)}
         >
-          Bảng tin
+          Bản tin
         </div>
         <div
           className={`nav-item ${selectedNavItem === 1 ? "selected" : ""}`}
@@ -42,6 +44,7 @@ export default function Dashboard( {selectedIndex}) {
         {selectedNavItem === 0 &&  <Main selectedIndex={selectedIndex}/>}
         {selectedNavItem === 1 &&  <Assignment/>}
         {selectedNavItem === 2 &&  <People/>}
+        {selectedNavItem === 3 && loginnedUserId.role === 'teacher' &&  <Grade/>}
   
         </div>
     </div>

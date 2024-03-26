@@ -7,6 +7,9 @@ import { lightFormatters } from "date-fns";
 import "./MyQuill.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import pdf from "../../../asset/pdf.png";
+import word from "../../../asset/word.png";
+import ClearIcon from "@mui/icons-material/Clear";
 const MyQuillComponent = ({ onClose }) => {
   const [content, setContent] = useState("");
   const { selectedClass, setNotification, handleChilderRender } = useApp();
@@ -14,8 +17,9 @@ const MyQuillComponent = ({ onClose }) => {
   const handleEditorChange = (value) => {
     setContent(value);
   };
+  
   const handleSave = async () => {
-    // console.log("Content:", content);
+    console.log("Content:", content);
     try {
       const formData = new FormData();
       for (const file of files) {
@@ -74,6 +78,14 @@ const MyQuillComponent = ({ onClose }) => {
     onClose();
   };
 
+  function truncateString(str, length) {
+    if (str.length > length) {
+      return str.substring(0, length) + "...";
+    } else {
+      return str;
+    }
+  }
+
   const [files, setFiles] = useState([]);
   const [pdfUrls, setPdfUrls] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -81,8 +93,15 @@ const MyQuillComponent = ({ onClose }) => {
   const handleFileChange = (e) => {
     const files = e.target.files;
     setFiles(files);
-    const fileNames = Array.from(files).map((file) => file.name);
-    setSelectedFiles(fileNames);
+    const filesArray = Array.from(files);
+    setSelectedFiles(filesArray);
+
+  };
+
+  const deleteFile = async (index) => {
+    const updatedFiles = [...selectedFiles];
+    updatedFiles.splice(index, 1);
+    setSelectedFiles(updatedFiles);
   };
 
   return (
@@ -108,9 +127,51 @@ const MyQuillComponent = ({ onClose }) => {
           </label>
           
           <div>
-          {selectedFiles.length > 0 &&
-            // <span className="selected-files">{selectedFiles.join('    ')}</span>
-            selectedFiles.map((file) => <div key={file}>{file}</div>)}
+          {/* {selectedFiles.length > 0 &&
+      
+            selectedFiles.map((file) => <div key={file}>{file}</div>)} */}
+            {selectedFiles.length > 0 && (
+                <div className="file-content" style={{width:"500px"}}>
+                  {selectedFiles?.map((fileID, index) => {
+                    // const fileInfo = getFileInfo(fileID);
+                    if (fileID) {
+                      const filename = fileID.name;
+                      const isPdf = filename.toLowerCase().endsWith(".pdf");
+                      const isDocx = filename.toLowerCase().endsWith(".docx");
+                      const isImage =
+                      filename.toLowerCase().endsWith(".png") ||
+                      filename.toLowerCase().endsWith(".jpg");
+                      // filename = truncateString(filename, 15)
+                      // Choose the appropriate image based on the file extension
+                      const iconSrc = isPdf ? pdf : isDocx ? word : isImage;
+                      return (
+                        <div
+                          className="file-container"
+                          key={fileID.lastModified}
+                        >
+                          <div className="files">
+                            <div className="file-content-inside">
+                              <img
+                                src={iconSrc}
+                                alt={isPdf ? "PDF" : isDocx ? "DOCX" : "File"}
+                                className="file-icon"
+                              />
+                              <span className="filename">
+                                {truncateString(filename, 15)}
+                              </span>
+                              <ClearIcon
+                                className="clear-file-icon"
+                                onClick={() => deleteFile(index)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null; // or handle the case when fileInfo is not available
+                  })}
+                </div>
+              )}
           </div>
         </div>
         

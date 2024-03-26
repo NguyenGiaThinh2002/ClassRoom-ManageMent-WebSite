@@ -129,3 +129,18 @@ header {
 .ten-lop-hoc{
   margin-left: 10px;
 }
+
+
+.search-icon{
+  /* font-size: large; */
+  display: flex;
+  align-items: center;
+  /* width: 50px; */
+  height: 50px;
+}
+
+.search-icon:hover {
+
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}

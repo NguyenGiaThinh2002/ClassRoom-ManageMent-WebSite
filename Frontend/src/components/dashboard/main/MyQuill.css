@@ -1,10 +1,11 @@
 /* Style for the file input */
 
 .custom-container-edit{
+  /* display: block; */
     display: flex;
     justify-content: space-between;
     margin: 5px;
-    height: 40px;
+    height: 100%;
     margin-top: 80px;
 }
 input[type="file"] {
@@ -20,8 +21,8 @@ input[type="file"] {
     border: none;
     border-radius: 50em;
     margin-right: 10px;
-    /* width: 30px;
-    height: 30px; */
+    width: 20px;
+    height: 20px;
 
   }
   .custom-input-edit{

@@ -15,7 +15,6 @@ class NotificationController {
     async getNotification(req, res){
         try {   
             const classId = req.params.classID;
-            // console.log(classId);
             const notification = await Notification.find({ classID: classId });
             return res.status(200).json(notification);
         } catch (error) {
@@ -54,6 +53,35 @@ class NotificationController {
             return res.status(200).json(notification);
         } catch (error) {
             return res.status(400).send(error);
+        }
+    }
+    async addComment(req, res){
+        try {
+            const notificationId = req.params.notificationId;
+            // const {comment, userID} = req.body;
+            const commentData = req.body;
+            const newNotification = await Notification.findById(notificationId);
+            newNotification.comments.push(commentData)
+            console.log(newNotification);
+            // thinh
+            const result = await newNotification.save();
+
+            res.status(200).json({ success: true, result });
+            console.log(result);
+            // 
+        } catch (error) {
+            res.status(400).json({ error: error})     
+        }
+    }
+    async deleteComment(req, res){
+        try {
+            const {notificationId, commentIndex} = req.body;
+            const newNotification = await Notification.findById(notificationId);
+            newNotification.comments.splice(commentIndex,1);
+            const result = await newNotification.save();
+            res.status(200).json({ success: true, result });
+        } catch (error) {
+            res.status(400).json({ error: error})  
         }
     }
 }

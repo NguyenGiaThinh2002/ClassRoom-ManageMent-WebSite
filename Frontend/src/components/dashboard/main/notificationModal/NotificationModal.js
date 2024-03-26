@@ -14,10 +14,12 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
   const [content, setContent] = useState("");
   const { selectedClass, files, setNotification, handleChilderRender } = useApp();
   const [createdFiles, setCreatedFiles] = useState([]);
-  const [thisComponetFiles, setFiles] = useState([]);
   const [pdfUrls, setPdfUrls] = useState([]);
-  const [notificationFiles, setNotificationFiles] = useState([]);
   const [existingFiles, setExistingFiles] = useState([]);
+
+  const [notificationFiles, setNotificationFiles] = useState([]);
+  const [thisComponentFiles, setSelectedFiles] = useState([]);
+  const [selectedFilesName, setSelectedFilesName] = useState([]);
   useEffect(() => {
     if (isOpen && notificationId) {
       // Fetch notification data when the modal is opened
@@ -61,13 +63,11 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
     setContent(value);
   };
 
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
   const handleFileChange = (e) => {
     const files = e.target.files;
-    setFiles(files);
+    setSelectedFiles(files);
     const fileNames = Array.from(files).map((file) => file.name);
-    setSelectedFiles(fileNames);
+    setSelectedFilesName(fileNames);
   };
 
   const [, forceUpdate] = useState();
@@ -76,9 +76,9 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
     try {
       let uploadedFileIds = [...existingFiles]; // Start with existing files
 
-      if (thisComponetFiles.length > 0) {
+      if (thisComponentFiles.length > 0) {
         const formData = new FormData();
-        for (const file of thisComponetFiles) {
+        for (const file of thisComponentFiles) {
           formData.append("pdf", file);
         }
 
@@ -106,7 +106,7 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
 
       // Notification update logic
       console.log(uploadedFileIds);
-      if (thisComponetFiles.length <= 0) {
+      if (thisComponentFiles.length <= 0) {
         uploadedFileIds = notificationFiles;
       }
       const updatedNotificationData = {
@@ -140,6 +140,10 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
     } catch (error) {
       console.error("Error:", error.message);
     }
+    setSelectedFiles([]);
+    setCreatedFiles([]);
+    setNotificationFiles([]);
+    setSelectedFilesName([]);
     // forceUpdate();
     // window.location.reload();
   };
@@ -147,8 +151,10 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
   const handleClose = () => {
     // Clear the state and close the modal
     setContent("");
-    setFiles([]);
+    setSelectedFiles([]);
     setCreatedFiles([]);
+    setNotificationFiles([]);
+    setSelectedFilesName([]);
     onClose();
   };
   const getFileInfo = (fileID) => {
@@ -174,11 +180,16 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
     console.log("Deleting file with ID:", fileID);
     setNotificationFiles(notificationFiles.filter((id) => id !== fileID));
   };
-
+  // .thisisQuill{
+  //   display: block;
+  //   height: 200px;
+  // }
   return (
+    <div style={{display:"flex", flexDirection:"column"}}>
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customStyles}>
-      <ReactQuill value={content} onChange={(value) => setContent(value)} />
-
+      <div style={{ height:"250px"}}>
+      <ReactQuill value={content} onChange={(value) => setContent(value)} style={{ height:"200px"}}/>
+      </div>
       <div className="file-content">
         {notificationFiles.map((fileID, index) => {
           const fileInfo = getFileInfo(fileID);
@@ -234,9 +245,9 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
         <FontAwesomeIcon icon={faUpload} className="mr-2" />
       </label>
       <div>
-        {selectedFiles.length > 0 &&
-          // <span className="selected-files">{selectedFiles.join('    ')}</span>
-          selectedFiles.map((file) => <div key={file}>{file}</div>)}
+        {selectedFilesName.length > 0 &&
+          selectedFilesName.map((file) => <div key={file}>{file}</div>)}
+          
       </div>
 
       <div style={{ marginTop: "20px" }}>
@@ -247,6 +258,7 @@ const EditNotificationModal = ({ isOpen, onClose, notificationId }) => {
       </div>
       </div>
     </Modal>
+    </div>
   );
 };
 

@@ -4,13 +4,16 @@
 }
 
 /* Style for the file input */
-
+.custom-input{
+  align-items: center;
+  margin-top: 10px;
+}
 .custom-container{
     display: flex;
     justify-content: space-between;
     margin: 5px;
     height: 40px;
-    margin-top: 60px;
+    margin-top: 80px;
 }
 input[type="file"] {
     display: none; /* Hide the default file input */

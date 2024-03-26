@@ -6,9 +6,11 @@ import Body from '../../components/body/Body'
 import '../home/home.css'
 export default function Home() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  // const [open]
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+  
   
   return (
     <div className='home'>
